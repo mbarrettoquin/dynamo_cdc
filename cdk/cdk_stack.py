@@ -10,6 +10,7 @@ from aws_cdk import (
     aws_logs as logs,
     Duration,
 )
+from aws_cdk.aws_lambda_event_sources import DynamoEventSource
 
 class DynamoCdcLatencyStack(Stack):
     
@@ -110,11 +111,11 @@ class DynamoCdcLatencyStack(Stack):
         
         # Create DynamoDB Stream Event Source for Reader Lambda
         reader_lambda.add_event_source(
-            _lambda.DynamoEventSource(
+            DynamoEventSource(
                 table=table,
                 starting_position=_lambda.StartingPosition.LATEST,
                 batch_size=10,
-                max_batching_window=Duration.seconds(5),
+                max_batching_window=Duration.minutes(1),
                 retry_attempts=3
             )
         )
