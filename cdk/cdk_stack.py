@@ -80,7 +80,7 @@ class DynamoCdcLatencyStack(Stack):
             handler="writer.lambda_handler",
             code=_lambda.Code.from_asset("../lambda"),
             role=writer_role,
-            timeout=Duration.seconds(30),
+            timeout=Duration.minutes(1),
             environment={
                 "DYNAMODB_TABLE_NAME": self.DYNAMODB_TABLE_NAME
             },
@@ -94,15 +94,15 @@ class DynamoCdcLatencyStack(Stack):
             handler="reader.lambda_handler",
             code=_lambda.Code.from_asset("../lambda"),
             role=reader_role,
-            timeout=Duration.seconds(60),
+            timeout=Duration.minutes(1),
             log_retention=logs.RetentionDays.ONE_WEEK
         )
         
-        # Create EventBridge rule to trigger Writer Lambda every 30 seconds
+        # Create EventBridge rule to trigger Writer Lambda every 1 minute
         schedule_rule = events.Rule(
             self, "WriterScheduleRule",
-            schedule=events.Schedule.rate(Duration.seconds(30)),
-            description="Triggers DynamoDB CDC latency test writer every 30 seconds"
+            schedule=events.Schedule.rate(Duration.minutes(1)),
+            description="Triggers DynamoDB CDC latency test writer every 1 minute"
         )
         
         # Add Writer Lambda as target for the scheduled rule

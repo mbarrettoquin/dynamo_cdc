@@ -12,7 +12,7 @@ EventBridge (Scheduler) → Lambda (Writer) → DynamoDB Table → DynamoDB Stre
 
 - **Writer Lambda**: Periodically writes test records with timestamps to DynamoDB
 - **Reader Lambda**: Processes DynamoDB stream events and calculates latency
-- **EventBridge Rule**: Triggers the writer every 30 seconds
+- **EventBridge Rule**: Triggers the writer every 1 minute
 - **CloudWatch Logs**: Stores latency measurements for analysis
 
 ## Prerequisites
@@ -78,7 +78,7 @@ The framework logs structured JSON with the following fields:
 ## Cost Considerations
 
 This test framework incurs minimal costs:
-- Lambda invocations (writer runs every 30 seconds)
+- Lambda invocations (writer runs every 1 minute)
 - DynamoDB writes (small test records)
 - CloudWatch Logs storage
 - Estimated cost: < $5/month for continuous testing
