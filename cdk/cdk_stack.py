@@ -68,6 +68,13 @@ class DynamoCdcLatencyStack(Stack):
                                 "dynamodb:ListStreams"
                             ],
                             resources=[f"{table.table_arn}/*"]
+                        ),
+                        iam.PolicyStatement(
+                            effect=iam.Effect.ALLOW,
+                            actions=[
+                                "cloudwatch:PutMetricData"
+                            ],
+                            resources=["*"]
                         )
                     ]
                 )
